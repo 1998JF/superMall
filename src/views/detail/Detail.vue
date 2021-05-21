@@ -3,6 +3,7 @@
     <detail-nav-bar class="detail-nav" @titleClick="titleClick" ref="nav" />
     <scroll
       class="content"
+      
       ref="scroll"
       @scroll="contentScroll"
       :probe-type="3"
@@ -18,6 +19,8 @@
     <detail-bottom-bar class="bottom-bar" @addToCart="addToCart" />
     <!-- 返回顶部 -->
     <back-top @click.native="backClick" v-show="isShowBackTop" />
+    <!-- 添加商品提示信息 -->
+    <!-- <toast :message="message" :is-show="show" /> -->
   </div>
 </template>
 
@@ -38,6 +41,7 @@ import Scroll from "components/common/scroll/Scroll";
 import { getDetail, Goods, Shop, GoodsParam, getRecommend } from "api/detail";
 import { itemListenerMixin,backTopMixin } from "common/minxin";
 import { debounce } from "common/utils";
+import { mapActions} from "vuex";
 export default {
   name: "Detail",
   components: {
@@ -51,8 +55,10 @@ export default {
     DetailCommentInfo,
     GoodsList,
     DetailBottomBar,
+     
   },
-  mixins: [itemListenerMixin,backTopMixin],
+
+   mixins: [itemListenerMixin,backTopMixin],
   data() {
     return {
       iid: null,
@@ -66,6 +72,9 @@ export default {
       themeTopYs: [],
       getThemeTopY: null,
       currentIndex: 0,
+      // 商品添加提示信息
+      // message:'',
+      // show:false,
     };
   },
   created() {
@@ -80,6 +89,7 @@ export default {
     this.$bus.$off("itemImageLoad", this.itemImgListener);
   },
   methods: {
+    ...mapActions(['addCart']),
     // 网络请求获取数据
     handleData() {
       // 请求详情数据
@@ -169,9 +179,28 @@ export default {
       price : this.goods.relPrice,
       iid : this.iid
     }
-    console.log(product,'prodct', this.$store);
+
+    // console.log(product,'prodct', this.$store);
     // 2、将商品添加到购物车里
-    this.$store.commit('addCart',product)
+    // this.$store.commit('addCart',product)
+
+    this.addCart(product).then(res=>{
+      // this.show=true
+      // this.message=res
+      // setTimeout(()=>{
+      //   this.show=false
+      //   this.message=''
+      // },1500)
+      this.$toast.show(res,1500)
+    })
+
+    // this.$store.dispatch('addCart',product).then(res=>{
+    //     // 3、添加到购物车成功
+    //   console.log('res',res);
+    // })
+
+
+  
     }
     
   },
@@ -205,7 +234,7 @@ export default {
 }
 .content {
  flex: 1;
- overflow: auto;
+ overflow: hidden;
 }
 .bottom-bar{
   width: 100%;

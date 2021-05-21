@@ -20,6 +20,11 @@
         <img slot="item-icon_active" src="~assets/img/tabbar/profile_active.svg" alt="" />
         <div slot="item-text">我的</div>
       </tab-bar-item>
+      <tab-bar-item path='/other'>
+        <img slot="item-icon" src="~assets/img/tabbar/profile.svg" alt="" />
+        <img slot="item-icon_active" src="~assets/img/tabbar/profile_active.svg" alt="" />
+        <div slot="item-text">数据</div>
+      </tab-bar-item>
     </tab-bar>
 </template>
 

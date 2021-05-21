@@ -48,6 +48,13 @@ const routes = [
         TabbarShow:false  //需要显示底部导航栏
     }
 },
+{
+    path:'/other',
+    component: () => import('../views/other/Other'),
+    meta:{
+        TabbarShow:true  //需要显示底部导航栏
+    }
+},
 ]
 const router = new VueRouter({
 routes,
